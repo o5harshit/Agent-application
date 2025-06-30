@@ -5,9 +5,9 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { apiClient } from "@/lib/api-client";
 import { ADMIN_LOGIN_ROUTE, ADMIN_SIGNUP_ROUTE } from "@/utils/constants";
 import { useDispatch } from "react-redux";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/Components/ui/input";
 import { setAdmin } from "@/redux/slice/adminAuthSlice";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 
 const Signup = () => {
   const dispatch = useDispatch();
