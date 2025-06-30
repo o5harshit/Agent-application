@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { apiClient } from "@/lib/api-client";
 import { clearAdmin } from "@/redux/slice/adminAuthSlice";
 import { LOGOUT_USER } from "@/utils/constants";

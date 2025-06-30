@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
 import { motion } from "framer-motion";
