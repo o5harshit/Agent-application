@@ -13,7 +13,7 @@ import { Provider } from "react-redux";
 import { ProtectedAuthRoute } from "./lib/ProtectedAuthRoute";
 import Login from "./Pages/Login";
 import AddAgentPage from "./Pages/AddAgent";
-import UploadList from "./Pages/uploadcsv";
+import UploadList from "./Pages/Uploadcsv";
 import LeadsBoard from "./Pages/LeadsBoard";
 import { PrivateRoute } from "./lib/PrivateRoute";
 
