@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AgentLeadsTable from "@/components/AgentLeadsTable";
+import AgentLeadsTable from "@/Components/AgentLeadsTable";
  // adjust the path to your apiClient
 import { LEADER_BOARD } from "@/utils/constants";
 import { apiClient } from "@/lib/api-client";
