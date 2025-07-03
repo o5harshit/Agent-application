@@ -11,15 +11,7 @@ import { Button } from "@/Components/ui/button";
 import { Card, CardContent } from "@/Components/ui/card";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-/**
- * AgentLeadsTable – ShadCN/Tailwind version
- * -------------------------------------------------
- * Added **Created By** column to show the admin who owns each agent.
- * The component expects one of these properties per agent:
- *   • `adminName`      – recommended (string)
- *   • or `createdBy`   – string fallback
- *   • or `adminId`     – final fallback (ObjectId string)
- */
+
 export default function AgentLeadsTable({ agents = [] }) {
   const [openId, setOpenId] = useState(null);
   const toggle = (id) => setOpenId((prev) => (prev === id ? null : id));
