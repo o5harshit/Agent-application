@@ -221,9 +221,10 @@ export const uploadList = async (req, res) => {
       return res.status(400).json({ success: false, message: "Empty file" });
 
     // fetch 5 agents
-    const agents = await Agent.find().limit(5);
-    if (agents.length < 5)
-      return res.status(400).json({ success: false, message: "Need at least 5 agents" });
+
+    const agents = await Agent.find();
+    // if (agents.length < 5)
+    //   return res.status(400).json({ success: false, message: "Need at least 5 agents" });
 
     // distribute
     const leads = rows.map((row, idx) => ({
