@@ -12,7 +12,11 @@ const agentSchema = new mongoose.Schema(
       required: [true, "Email is required"],
       unique: true,
       lowercase: true,
-      match: [/.+@.+\..+/, "Please fill a valid email address"],
+      trim: true,
+      match: [
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        "Please fill a valid email address",
+      ],
     },
     mobile: {
       type: String,
@@ -22,10 +26,16 @@ const agentSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
     },
+
+    /* NEW — points to the Admin who created / manages this agent */
+    adminId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Admins",
+      required: true,
+      index: true, // makes filtering by admin fast
+    },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const Agent = mongoose.model("Agent", agentSchema);

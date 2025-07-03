@@ -23,7 +23,7 @@ AdminRoutes.post(
   upload.single("file"), // field name = file
   uploadList
 );
-AdminRoutes.post("/create-Agent", createAgent);
+AdminRoutes.post("/create-Agent",verifyToken, createAgent); 
 AdminRoutes.get("/with-leads",verifyToken,getLeadsBoard);
 
 export default AdminRoutes;

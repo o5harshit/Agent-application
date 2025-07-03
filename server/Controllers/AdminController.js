@@ -168,36 +168,59 @@ export const Logout = async (req,res) => {
 };
 
 
+
 export const createAgent = async (req, res) => {
   try {
-    const { name, email, mobile, password } = req.body;
+   const adminId = req.userId;  // set in verifyToken
+   console.log("Admin ID:", adminId);
+    if (!adminId) {
+      console.log("Not authorized, no adminId found");
+      return res.status(401).json({ success: false, message: "Not authorized" });
+    }
 
+
+    const { name, email, mobile, password } = req.body;
+    console.log(req.body);
     if (!name || !email || !mobile || !password) {
-      return res.status(400).json({ success: false, message: "All fields are required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are required" });
     }
 
     const existingAgent = await Agent.findOne({ email });
     if (existingAgent) {
-      return res.status(400).json({ success: false, message: "Agent with this email already exists" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Agent with this email already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newAgent = new Agent({
+    const newAgent = await Agent.create({
       name,
       email,
       mobile,
       password: hashedPassword,
+      adminId,                // link agent to this admin
     });
 
-    await newAgent.save();
+    const { password: _pw, ...agentSafe } = newAgent.toObject();
 
-    return res.status(201).json({ success: true, message: "Agent created successfully", agent: newAgent });
+    return res
+      .status(201)
+      .json({
+        success: true,
+        message: "Agent created successfully",
+        agent: agentSafe,
+      });
   } catch (error) {
     console.error("Error creating agent:", error);
-    return res.status(500).json({ success: false, message: "Server error" });
+    return res
+      .status(500)
+      .json({ success: false, message: "Server error" });
   }
 };
+
 
 
 export const uploadList = async (req, res) => {
@@ -231,7 +254,7 @@ export const uploadList = async (req, res) => {
       firstName: row.FirstName || row.firstName || row.firstname,
       phone: row.Phone || row.phone,
       notes: row.Notes || row.notes || "",
-      agentId: agents[idx % 5]._id,
+      agentId: agents[idx % agents.length]._id,
     }));
 
     await Lead.insertMany(leads);
@@ -243,24 +266,39 @@ export const uploadList = async (req, res) => {
 };
 
 
-// --- leads board controller ---
+
 export const getLeadsBoard = async (req, res) => {
   try {
-    // fetch all agents
-    const agents = await Agent.find().lean();
-    // fetch all leads once
-    const leads = await Lead.find().select("firstName phone notes agentId createdAt").lean();
+    const adminId = req.userId; // set in verifyToken
+    if (!adminId) {
+      return res.status(401).json({ success: false, message: "Not authorized" });
+    }
 
-    // group leads by agentId
-    const grouped = agents.map((a) => ({
-      ...a,
-      leads: leads.filter((l) => String(l.agentId) === String(a._id)),
+    const agents = await Agent.find({ adminId })
+      .populate("adminId", "name")      // add "email" if you need it
+      .lean();
+
+    const agentIds = agents.map((a) => a._id);
+
+
+    const leads = await Lead.find({ agentId: { $in: agentIds } })
+      .select("firstName phone notes agentId createdAt")
+      .lean();
+
+    const grouped = agents.map((agent) => ({
+      ...agent,
+      adminName: agent.adminId?.name || "Unknown Admin",
+      leads: leads.filter(
+        (lead) => String(lead.agentId) === String(agent._id)
+      ),
     }));
 
-    res.json({ success: true, agents: grouped });
+    return res.json({ success: true, agents: grouped });
   } catch (err) {
-    console.error("getLeadsBoard error", err);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("getLeadsBoard error:", err);
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+
  

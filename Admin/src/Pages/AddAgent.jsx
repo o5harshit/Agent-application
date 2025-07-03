@@ -24,7 +24,7 @@ export default function AddAgentPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await apiClient.post(CREATE_AGENT,{name : form.name,email : form.email,password : form.password,mobile : form.mobile})
+    const response = await apiClient.post(CREATE_AGENT,{name : form.name,email : form.email,password : form.password,mobile : form.mobile},{withCredentials:true});
     if(response.data.success){
         toast.success("Agent created successfully 🚀");  
     setForm({ name: "", email: "", mobile: "", password: "" });
