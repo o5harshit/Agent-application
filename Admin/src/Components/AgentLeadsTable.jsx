@@ -6,9 +6,9 @@ import {
   TableHead,
   TableBody,
   TableCell,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+} from "@/Components/ui/table";
+import { Button } from "@/Components/ui/button";
+import { Card, CardContent } from "@/Components/ui/card";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 /**
